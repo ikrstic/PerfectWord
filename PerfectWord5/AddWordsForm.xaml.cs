@@ -18,12 +18,15 @@ namespace PerfectWord5
         {
             InitializeComponent();
         }
-
+        //Iniciranje pokretanja metode ListWords po otvaranju forme
         private void OnLoad(object sender, System.EventArgs e)
         {
             ListWords();
+            txtbPrevod.IsEnabled = false;
+            txtbOpis.IsEnabled = false;
+            btnSave.IsEnabled = false;
         }
-
+        //Ucitavanje reci u formu za upotrebu pri pretrazi
         private void ListWords()
         {
             sqlCon = new SqlConnection();
@@ -56,10 +59,13 @@ namespace PerfectWord5
         {
 
         }
-
+        //Pokretanje ucitavanje liste reci iz baze podataka u glavnoj formi 
+        //pri promeni nastaloj u formi AddWords, npr pri unosu nove reci, 
+        //kako bi se promena prikazala na glavnom prozoru bez potrebe za ponovnim porektanjem programa
         public delegate void methodHandler();
         public methodHandler OnRunMethod;
-    
+        
+        //postavljenje geter a i setera za konekciju i upotrebu podataka iz baze
         public SqlConnection sqlCon { get; set; }
 
         public SqlCommand cmd { get; set; }
@@ -68,6 +74,9 @@ namespace PerfectWord5
 
         public DataSet ds { get; set; }
 
+
+        //Klikom na dugme Close zatvara se prozor AddWords ali se pre toga pokrece obnavljanje liste reci iz baze
+        // koji se prikazuju u glavnom programu
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             if (OnRunMethod != null)
@@ -75,6 +84,7 @@ namespace PerfectWord5
             this.Close();
         }
 
+        //pokretanje prikaza reci u poljima prevod i opis ukoliko je rec uneta u polje original pronadjena u bazi
         private void cmbOriginal_DropDownClosed(object sender, EventArgs e)
         {
             sqlCon = new SqlConnection();
@@ -95,9 +105,20 @@ namespace PerfectWord5
                     string sPrevod = dr.GetString(1);
                     string sOpis = dr.GetString(2);
 
-                    //txtbID.Text = sID;
-                    txtbPrevod.Text = sPrevod;
-                    txtbOpis.Text = sOpis;
+                    //proverava da li je rec pronadjena u bazi
+                    //ukoliko nije polja prevod i opis ostaju neaktivna
+                    //kao i dugme save
+                    if (sPrevod != null | sOpis != null)
+                    {
+                        txtbPrevod.IsEnabled = true;
+                        txtbOpis.IsEnabled = true;
+                        btnSave.IsEnabled = true;
+
+                        //txtbID.Text = sID;
+                        txtbPrevod.Text = sPrevod;
+                        txtbOpis.Text = sOpis;
+                    }
+
                 }
                 //cmd.Dispose();
                 sqlCon.Close();
