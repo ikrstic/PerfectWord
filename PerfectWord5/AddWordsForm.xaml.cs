@@ -98,27 +98,29 @@ namespace PerfectWord5
                 cmd.CommandText = "SELECT Original, Prevod, Opis FROM Words where Original='" + cmbOriginal.Text + "'";
                 SqlDataReader dr = cmd.ExecuteReader();
 
-                while (dr.Read())
+                //proverava da li je rec pronadjena u bazi
+                //ukoliko postoji unos polja prevod i opis ostaju neaktivna
+                //kao i dugme save, u suprotnom tj. za nove unose se polja aktiviraju
+                if (!(dr.HasRows))
                 {
-                    //string sID = dr.GetString(0);
-                    //string sOriginal = dr.GetString(0);
-                    string sPrevod = dr.GetString(1);
-                    string sOpis = dr.GetString(2);
-
-                    //proverava da li je rec pronadjena u bazi
-                    //ukoliko nije polja prevod i opis ostaju neaktivna
-                    //kao i dugme save
-                    if (sPrevod != null | sOpis != null)
+                    txtbPrevod.IsEnabled = true;
+                    txtbOpis.IsEnabled = true;
+                    btnSave.IsEnabled = true;
+                }
+                else
+                {
+                    while (dr.Read())
                     {
-                        txtbPrevod.IsEnabled = true;
-                        txtbOpis.IsEnabled = true;
-                        btnSave.IsEnabled = true;
+                        //string sID = dr.GetString(0);
+                        //string sOriginal = dr.GetString(0);
+                        string sPrevod = dr.GetString(1);
+                        string sOpis = dr.GetString(2);
+
 
                         //txtbID.Text = sID;
                         txtbPrevod.Text = sPrevod;
                         txtbOpis.Text = sOpis;
                     }
-
                 }
                 //cmd.Dispose();
                 sqlCon.Close();
@@ -129,6 +131,7 @@ namespace PerfectWord5
             }
         }
 
+        //klikom na dugme save u bazu se unose podaci iz polja u formi i cuvaju
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             //var ID = Guid.NewGuid().ToString();
@@ -155,6 +158,7 @@ namespace PerfectWord5
             }
         }
 
+        //kontrola klika na dugme enter i tab za prikaz podataka u polja prevod i opis ukoliko se nalaze u bazi
         private void cmbOriginal_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Tab)
@@ -169,7 +173,18 @@ namespace PerfectWord5
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "SELECT Original, Prevod, Opis FROM Words where Original='" + cmbOriginal.Text + "'";
                     SqlDataReader dr = cmd.ExecuteReader();
-
+                    
+                    //proverava da li je rec pronadjena u bazi
+                    //ukoliko postoji unos polja prevod i opis ostaju neaktivna
+                    //kao i dugme save, u suprotnom tj. za nove unose se polja aktiviraju
+                    if ( !(dr.HasRows))
+                    {
+                        txtbPrevod.IsEnabled = true;
+                        txtbOpis.IsEnabled = true;
+                        btnSave.IsEnabled = true;
+                    }
+                    else
+                    {
                     while (dr.Read())
                     {
                         //string sID = dr.GetString(0);
@@ -177,9 +192,11 @@ namespace PerfectWord5
                         string sPrevod = dr.GetString(1);
                         string sOpis = dr.GetString(2);
 
-                        //txtbID.Text = sID;
-                        txtbPrevod.Text = sPrevod;
-                        txtbOpis.Text = sOpis;
+
+                            //txtbID.Text = sID;
+                            txtbPrevod.Text = sPrevod;
+                            txtbOpis.Text = sOpis;
+                        }
                     }
                     //cmd.Dispose();
                     sqlCon.Close();
