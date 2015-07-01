@@ -195,43 +195,13 @@ namespace PerfectWord5
             EditWords.Show();
         }
 
-        private void txtbSearch_KeyDown(object sender, KeyEventArgs e)
+        private void SearchForm_Clicked(object sender, RoutedEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Tab)
-            {
-                sqlCon = new SqlConnection();
-                sqlCon.ConnectionString = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-                try
-                {
-                    sqlCon.Open();
-                    cmd = new SqlCommand();
-                    cmd.Connection = sqlCon;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "SELECT Original, Prevod, Opis FROM Words where Original='" + txtbSearch.Text + "'";
-                    SqlDataReader dr = cmd.ExecuteReader();
-
-                    while (dr.Read())
-                    {
-                        //string sID = dr.GetString(0);
-                        string sOriginal = dr.GetString(0);
-                        string sPrevod = dr.GetString(1);
-                        string sOpis = dr.GetString(2);
-
-                        txtbSearch.Text = sOriginal;
-
-                       // txtbID.Text = sID;
-                      //  txtbPrevod.Text = sPrevod;
-                       // txtbOpis.Text = sOpis;
-                    }
-                    //cmd.Dispose();
-                    sqlCon.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
+            SearchForm Search = new SearchForm();
+            Search.OnRunMethod += new PerfectWord5.SearchForm.methodHandler(Load_DataGrid);
+            Search.Show();
         }
+
         public SqlConnection sqlCon { get; set; }
 
         public SqlCommand cmd { get; set; }

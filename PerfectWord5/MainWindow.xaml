@@ -11,6 +11,20 @@
                         ShowIconOnTitleBar="True">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Click="SearchForm_Clicked">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                         Visual="{StaticResource appbar_magnify}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="Search" />
+                </StackPanel>
+            </Button>
             <Button Click="AddMenu_Clicked">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20" Height="20"
@@ -66,20 +80,6 @@
                    VerticalAlignment="Center"
                    Text="Export" />
                 </StackPanel>
-            </Button>            
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="20" Height="20"
-                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill"
-                         Visual="{StaticResource appbar_book_perspective_help}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="4 0 0 0"
-                   VerticalAlignment="Center"
-                   Text="Help" />
-                </StackPanel>
             </Button>
             <Button Click="RefreshMenu_Clicked">
                 <StackPanel Orientation="Horizontal">
@@ -96,22 +96,18 @@
                 </StackPanel>
             </Button>
             <Button>
-            <StackPanel Width="135">
-                    <TextBox  Margin="0,0,-30,0" 
-                              VerticalAlignment="Top" 
-                              Name="txtbSearch" 
-                              Width="120" KeyDown="txtbSearch_KeyDown" />
+                <StackPanel Orientation="Horizontal">
                     <Rectangle Width="20" Height="20"
-                               Margin="0,-25,0,0"
-                           HorizontalAlignment="Left"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill"
-                         Visual="{StaticResource appbar_magnify}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-
-            </StackPanel>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                         Visual="{StaticResource appbar_book_perspective_help}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="Help" />
+                </StackPanel>
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
